@@ -23,7 +23,7 @@
 
 ##### For example: lcd /path/to/sandbox/directory. 
 
-### Use the put command to upload the screenshots from your local machine to the sandbox environment. Provide the full path to each screenshot file you want to upload. For example:
+### Use the put command to upload the screenshots from your local machine to the sandbox environment, You can Also Provide the full path to each screenshot file you want to upload.
 
 ##### put screenshot1.png
 
