@@ -15,9 +15,11 @@
 
 #### Enter your password when prompted to authenticate and establish the SFTP connection.
 
-#### Navigate to the directory on the sandbox environment where you want to upload the screenshots using the cd command. For example: cd /path/to/sandbox/directory.
+#### Navigate to the directory on the sandbox environment where you want to upload the screenshots using the cd command. For example cd /path/to/sandbox/directory.
 
-#### Use the put command to upload the screenshots from your local machine to the sandbox environment. Provide the full path to each screenshot file you want to upload. For example:
+#### Navigate to the directory where you have the screenshots on your local machine For example: lcd /path/to/sandbox/directory. 
+
+### Use the put command to upload the screenshots from your local machine to the sandbox environment. Provide the full path to each screenshot file you want to upload. For example:
 
 ##### put /Users/YourUsername/folder/screenshot1.png
 
