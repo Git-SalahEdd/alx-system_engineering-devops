@@ -25,13 +25,11 @@
 
 ### Use the put command to upload the screenshots from your local machine to the sandbox environment. Provide the full path to each screenshot file you want to upload. For example:
 
-##### put /Users/YourUsername/folder/screenshot1.png
+##### put screenshot1.png
 
-##### put /Users/YourUsername/folder/screenshot2.png
+##### put screenshot2.png
 
-##### put /Users/YourUsername/folder/screenshot3.png
-
-##### Replace "/Users/YourUsername/folder/YourFile.png" with the actual path and filename of each screenshot you want to upload.
+##### put screenshot3.png
 
 #### To confirm the successful transfer of the screenshots, check the contents of the sandbox directory using the ls command: ls. This will display a list of files in the current directory on the sandbox environment, including the uploaded screenshots.
 
