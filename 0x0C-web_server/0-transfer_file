@@ -4,7 +4,7 @@ if [ "$#" -ne 4 ]; then
     exit 1
 fi
 source_file="$1"
-destination="$2@$3"
+destination="$3@$2:~/"
 scp -i "$4" "$source_file" "$destination"
 if [ $? -eq 0 ]; then
     echo "File transfer successful."
