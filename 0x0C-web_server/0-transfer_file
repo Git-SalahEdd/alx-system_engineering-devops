@@ -5,7 +5,8 @@ if [ "$#" -ne 4 ]; then
 fi
 source_file="$1"
 destination="$3@$2:~/"
-scp -o StrictHostKeyChecking=no -i "$4" "$source_file" "$destination"
+PATH_TO_SSH_KEY="$4"
+scp -o StrictHostKeyChecking=no -i "$PATH_TO_SSH_KEY" "$source_file" "$destination"
 if [ $? -eq 0 ]; then
     echo "File transfer successful."
 else
