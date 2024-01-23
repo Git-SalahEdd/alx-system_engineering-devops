@@ -1,12 +1,13 @@
 #!/usr/bin/env bash
-#Configure Nginx server so that /redirect_me is redirecting to another page.
+#Configure your Nginx server to have a custom 404 page that contains the string Ceci n'est pas une page.
 
-server_name_oldstr="server_name _;"
-server_name_newstr="server_name _;\n\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}"
+nginx_config_file="/etc/nginx/sites-available/default"
+backup_suffix=".bckp"
+custom_404_page_path="/var/www/html/not_found_page_404.html"
 
-error_page_oldstr="=404;"
-error_page_newstr="@oui_oui_baguette;\n\t}\n\n\tlocation @oui_oui_baguette {\n\t\tdefault_type text/html;\n\t\treturn 404 \"Ceci n'est pas une page\";"
-error_page_str="error_page 404 /not_found_page_404.html;\n\tlocation = /not_found_page_404.html {\n\t\troot /var/www/html;\n\t}"
+# Update Nginx configuration for redirect_me
+oldstr="server_name _;"
+newstr="server_name _;\n\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}"
 
 echo -e "Updating and installing Nginx.\n"
 sudo apt-get update -y -qq && \
@@ -14,26 +15,37 @@ sudo apt-get update -y -qq && \
 
 echo -e "\nSetting up some minor stuff.\n"
 
-# starting nginx service
+# Starting Nginx service
 sudo service nginx start
 
-# allowing nginx on firewall
+# Allowing Nginx on firewall
 sudo ufw allow 'Nginx HTTP'
 
 # Give the user ownership to website files for easy editing
 sudo chown -R "$USER":"$USER" /var/www/html
 sudo chmod -R 755 /var/www
 
-# Backup default configuration
-sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bckp
+# Backup default configuration to stay working safe
+sudo cp "$nginx_config_file" "$nginx_config_file$backup_suffix"
 
-# Update Nginx configuration for server_name
-sudo sed -i "/$server_name_oldstr/c$server_name_newstr" /etc/nginx/sites-available/default
+# Update Nginx configuration for redirect_me
+sudo sed -i "/$oldstr/c$newstr" "$nginx_config_file"
 
-# Update Nginx configuration for error_page
-sudo sed -i "/$error_page_oldstr/c$error_page_newstr\n\n\t$error_page_str" /etc/nginx/sites-available/default
+# Configure custom 404 page
+echo -e "\nConfiguring custom 404 page.\n"
+sudo sh -c "echo -e '$custom_404_page' > /var/www/html/custom_404.html"
 
-# Restarting nginx
+# Update Nginx configuration for custom 404 page
+sudo bash -c "cat <<EOL >> $nginx_config_file
+
+error_page 404 /custom_404.html;
+location = /custom_404.html {
+    root /var/www/html;
+    internal;
+}
+EOL"
+
+# Restarting Nginx so the changes can take effect
 sudo service nginx restart
 
-echo -e "\nCompleted. ✅\n"
+echo -e "\nCompleted. ✅\n" 
