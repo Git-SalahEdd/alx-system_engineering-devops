@@ -1,19 +1,32 @@
 #!/usr/bin/env bash
-# Configure your Nginx server so that /redirect_me is redirecting to another page.
+#Configure Nginx server so that /redirect_me is redirecting to another page.
 
 oldstr="server_name _;"
 newstr="server_name _;\n\n\tlocation /redirect_me {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}"
 
 echo -e "Updating and installing Nginx.\n"
 sudo apt-get update -y -qq && \
-	 sudo apt-get install nginx -y
+         sudo apt-get install nginx -y
+
 echo -e "\nSetting up some minor stuff.\n"
+
+# starting nginx service
 sudo service nginx start
+
+# allowing nginx on firewall
 sudo ufw allow 'Nginx HTTP'
+
+# Give the user ownership to website files for easy editing
 sudo chown -R "$USER":"$USER" /var/www/html
 sudo chmod -R 755 /var/www
-cp /var/www/html/index.nginx-debian.html /var/www/html/index.nginx-debian.html.bckp
-echo -e "Hello World!" | dd status=none of=/var/www/html/index.nginx-debian.html
+
+# Backup default configuration to stay working safe
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.bckp
+
+# Update Nginx configuration
+sudo sed -i "/$oldstr/c$newstr" /etc/nginx/sites-available/default
+
+# Restarting nginx so the changes can take effect
 sudo service nginx restart
 
 echo -e "\nCompleted. ✅\n"
