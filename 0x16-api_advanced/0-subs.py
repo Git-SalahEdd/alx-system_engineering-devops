@@ -20,9 +20,8 @@ def number_of_subscribers(subreddit):
     if subreddit is None:
         return 0
     url = "http://www.reddit.com/r/{}/about.json".format(subreddit)
-    headers = {"User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:73.0) \
-        Gecko/20100101 Firefox/73.0"}
+    user_agent = {"User-Agent": "ALX project about advanced api"}
 
-    response = requests.get(url, headers=headers, allow_redirects=False).json()
+    response = requests.get(url, headers=user_agent).json()
 
     return response.get("data", {}).get("subscribers", 0)
